@@ -29,13 +29,24 @@ pipeline {
             }
         }
         
+       stages {
         stage('SONARQUBE ANALYSIS') {
             steps {
                 withSonarQubeEnv('sonar') {
-                    sh " $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Bank -Dsonar.projectKey=Bank "
+                    sh '''
+                    export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+                    export PATH=$JAVA_HOME/bin:$PATH
+                    
+                    java -version
+                    $SCANNER_HOME/bin/sonar-scanner \
+                    -Dsonar.projectName=Bank \
+                    -Dsonar.projectKey=Bank
+                    '''
                 }
             }
         }
+    }
+}
         
         
          stage('Install Dependencies') {
