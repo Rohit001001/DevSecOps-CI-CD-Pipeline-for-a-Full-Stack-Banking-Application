@@ -70,7 +70,9 @@ pipeline {
         
         stage('Deploy to Container') {
             steps {
+                dir('app') {
                 sh "docker-compose up -d"
+                }
             }
         }
     }
